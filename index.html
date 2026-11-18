@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Celines Reel Studio</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Baloo+2:wght@800&family=Bangers&family=Caveat:wght@700&family=Fredoka:wght@600&family=Gochi+Hand&family=Inter:wght@500;800&family=Pacifico&family=Permanent+Marker&family=Poppins:wght@700&family=Sniglet:wght@800&display=swap">
+<style>
+:root{--pink:#ec4899;--bg:#fff7fb;--card:#fff;--line:#f1d5e3;--txt:#2a1b24;--mut:#8a6f7d}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font:15px/1.4 Inter,system-ui,sans-serif;background:var(--bg);color:var(--txt)}
+header{padding:14px 16px 6px;display:flex;align-items:center;gap:10px}
+header h1{font:800 20px Sniglet,Inter,sans-serif;margin:0;color:var(--pink)}
+header span{color:var(--mut);font-size:13px}
+main{max-width:1100px;margin:0 auto;padding:0 12px 40px;display:grid;gap:14px}
+@media(min-width:900px){main{grid-template-columns:420px 1fr;align-items:start}.stage{position:sticky;top:10px}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
+.card h2{font-size:15px;margin:0 0 10px;display:flex;gap:8px;align-items:center}
+.num{background:var(--pink);color:#fff;border-radius:50%;width:22px;height:22px;display:inline-grid;place-items:center;font-size:12px}
+.stage{display:flex;flex-direction:column;align-items:center;gap:8px}
+#cv{max-width:100%;max-height:62vh;border-radius:14px;background:#222;touch-action:none;box-shadow:0 6px 24px #0002}
+#empty{width:100%;aspect-ratio:9/16;max-height:62vh;border:2px dashed var(--line);border-radius:14px;display:grid;place-items:center;text-align:center;color:var(--mut);padding:20px;cursor:pointer}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row>label{font-size:12px;color:var(--mut);min-width:70px}
+button,.btn{border:0;border-radius:12px;padding:10px 14px;font:600 14px Inter,sans-serif;background:#f6e3ee;color:var(--txt);cursor:pointer}
+button.main{background:var(--pink);color:#fff}
+button.sm{padding:6px 10px;font-size:13px}
+button:disabled{opacity:.5}
+input[type=text],textarea,select,input[type=number]{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px;font:15px Inter,sans-serif;background:#fff}
+textarea{min-height:58px;resize:vertical}
+input[type=range]{width:100%;accent-color:var(--pink)}
+.time{width:100%}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tpl{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tpl button{padding:12px 6px;line-height:1.2}
+.tpl button small{display:block;font-weight:400;color:var(--mut);font-size:11px}
+.add{display:flex;gap:6px;flex-wrap:wrap}
+.el{border:1px solid var(--line);border-radius:12px;margin-top:8px;overflow:hidden}
+.el .hd{display:flex;align-items:center;gap:8px;padding:10px;cursor:pointer;background:#fffafd}
+.el .hd b{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.el .hd i{font-style:normal;font-size:12px;color:var(--mut)}
+.el.sel{border-color:var(--pink);box-shadow:0 0 0 2px #ec489933}
+.el .bd{padding:10px;display:grid;gap:9px;border-top:1px solid var(--line)}
+.sw{display:flex;gap:6px;flex-wrap:wrap}
+.sw span{width:28px;height:28px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #0002;cursor:pointer}
+.sw span.on{box-shadow:0 0 0 3px var(--pink)}
+.hint{font-size:12px;color:var(--mut)}
+#prog{width:100%;height:8px;border-radius:8px;background:#f6e3ee;overflow:hidden;display:none}
+#prog div{height:100%;width:0;background:var(--pink)}
+#out video{width:100%;max-width:300px;border-radius:12px;margin-top:8px}
+video#src{position:fixed;left:-9999px;top:0;width:2px;height:2px}
+</style>
+</head>
+<body>
+<header><h1>Reel Studio</h1><span>für Celine</span></header>
+<main>
+<section class="stage card">
+  <div id="empty">Tippe hier und wähle dein fertig geschnittenes Video (Hochformat, mit Ton)</div>
+  <canvas id="cv" style="display:none"></canvas>
+  <div class="row" style="width:100%">
+    <button id="play" class="sm" disabled>▶︎ Abspielen</button>
+    <input id="seek" class="time" type="range" min="0" max="1" step="0.01" value="0" style="flex:1" disabled>
+    <span id="tlabel" class="hint">0,0 s</span>
+  </div>
+  <div class="hint">Element in der Liste antippen, dann im Video mit dem Finger verschieben.</div>
+</section>
+
+<div style="display:grid;gap:14px">
+<section class="card">
+  <h2><span class="num">1</span>Video</h2>
+  <input id="file" type="file" accept="video/*">
+</section>
+
+<section class="card">
+  <h2><span class="num">2</span>Marke und Vorlage</h2>
+  <div class="grid2">
+    <div><label class="hint">Name im Badge</label><input id="bName" type="text"></div>
+    <div><label class="hint">Slogan</label><input id="bSlogan" type="text"></div>
+    <div><label class="hint">Hook (Thema)</label><input id="bHook" type="text" placeholder="z. B. Mini-Donuts für den Kindergeburtstag"></div>
+    <div><label class="hint">Kommentar-Wort</label><input id="bWord" type="text" placeholder="z. B. Donut"></div>
+  </div>
+  <p class="hint">Vorlage wählen (ersetzt die Elemente):</p>
+  <div class="tpl">
+    <button data-tpl="finds">Finds<small>Badge, gelbe Balken, Handschrift</small></button>
+    <button data-tpl="clean">Clean<small>große Schrift, Kontur</small></button>
+    <button data-tpl="pastell">Pastell<small>weich, rund, ruhig</small></button>
+  </div>
+</section>
+
+<section class="card">
+  <h2><span class="num">3</span>Elemente</h2>
+  <div class="add">
+    <button class="sm" data-add="badge">+ Badge</button>
+    <button class="sm" data-add="hook">+ Balken-Text</button>
+    <button class="sm" data-add="sticker">+ Pop-up Text</button>
+    <button class="sm" data-add="cta">+ Kommentar-CTA</button>
+    <button class="sm" data-add="price">+ Preisschild</button>
+    <button class="sm" data-add="rating">+ Sterne</button>
+    <button class="sm" data-add="arrow">+ Pfeil</button>
+    <button class="sm" data-add="emoji">+ Emoji</button>
+  </div>
+  <div id="list"></div>
+</section>
+
+<section class="card">
+  <h2><span class="num">4</span>Reel erstellen</h2>
+  <p class="hint">Das Video läuft einmal komplett durch und wird dabei aufgenommen. Bildschirm bitte anlassen.</p>
+  <button id="exp" class="main" disabled>Reel erstellen</button>
+  <div id="prog" style="margin-top:10px"><div></div></div>
+  <div id="out"></div>
+</section>
+</div>
+</main>
+<video id="src" playsinline webkit-playsinline preload="auto"></video>
+
+<script>
+const FONTS=[["Sniglet","Bubble"],["Gochi Hand","Handschrift"],["Caveat","Handschrift 2"],["Permanent Marker","Marker"],["Pacifico","Schreibschrift"],["Fredoka","Rund"],["Baloo 2","Rund fett"],["Inter","Clean"],["Poppins","Modern"],["Anton","Hoch & fett"],["Bangers","Comic"],["Archivo Black","Block"]];
+const WEIGHT={"Sniglet":800,"Inter":800,"Fredoka":600,"Baloo 2":800,"Poppins":700,"Caveat":700};
+const COLORS=["#ff70aa","#ec4899","#ffee58","#ffffff","#141414","#40a0ff","#5eead4","#c4b5fd","#fb923c","#ef4444","#22c55e","#fde2ec"];
+const ANIMS=[["drag","Reinziehen mit Mauszeiger"],["pop","Pop"],["wobble","Pop + Wackeln"],["bounce","Hüpfen"],["type","Schreibmaschine"],["slide","Von unten"],["fade","Einblenden"]];
+const TYPES={badge:"Badge",hook:"Balken-Text",sticker:"Pop-up Text",cta:"Kommentar-CTA",price:"Preisschild",rating:"Sterne",arrow:"Pfeil",emoji:"Emoji"};
+const $=s=>document.querySelector(s);
+const video=$("#src"),cv=$("#cv"),ctx=cv.getContext("2d");
+let els=[],sel=-1,W=720,H=1280,S=1,exporting=false,actx=null,spk=null,dest=null;
+
+function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem("rs_"+k));localStorage.setItem("rs_"+k,JSON.stringify(v))}catch(e){return null}}
+const brand=store("brand")||{name:"Celines Finds",slogan:"Gekauft. Getestet. Geliebt.",hook:"",word:"Link"};
+["Name","Slogan","Hook","Word"].forEach(k=>{const i=$("#b"+k);i.value=brand[k.toLowerCase()]||"";i.oninput=()=>{brand[k.toLowerCase()]=i.value;store("brand",brand)}});
+
+// ---------- Vorlagen ----------
+function dur(){return video.duration||15}
+function mk(type,o={}){const D=dur();const base={type,text:"Text",sub:"",font:"Gochi Hand",color:"#ff70aa",color2:"#ffffff",anim:"pop",size:70,rot:0,x:.5,y:.4,start:0,end:Math.min(D,3),sparkle:false};
+ const def={
+  badge:{text:brand.name||"Celines Finds",sub:brand.slogan||"",font:"Sniglet",color:"#ff70aa",color2:"#ffee58",anim:"drag",size:62,y:.11,end:Math.min(D,4),sparkle:true},
+  hook:{text:(brand.hook||"Dein Thema hier")+"\n*das musst du sehen*",font:"Inter",color:"#141414",color2:"#ffee58",anim:"drag",size:44,y:.6,start:.5,end:Math.min(D,4.2),sparkle:true},
+  sticker:{text:"so gut!",font:"Gochi Hand",color:"#ff70aa",color2:"#ffffff",anim:"wobble",size:86,y:.3,sparkle:true},
+  cta:{text:`Kommentiere „${brand.word||"Link"}“\nfür den Link`,font:"Gochi Hand",color:"#ff8cbe",color2:"#ffffff",anim:"drag",size:66,y:.44,start:Math.max(0,D*.62),end:D,sparkle:true},
+  price:{text:"jetzt 24,99 €",sub:"statt 39,99 €",font:"Anton",color:"#141414",color2:"#ffee58",anim:"pop",size:64,y:.7,rot:-6},
+  rating:{text:"Meine Bewertung",font:"Gochi Hand",color:"#ffffff",color2:"#ffc400",anim:"pop",size:48,y:.75},
+  arrow:{text:"",font:"Gochi Hand",color:"#ff70aa",color2:"#ffffff",anim:"bounce",size:120,y:.55,x:.7,rot:120},
+  emoji:{text:"🍩",anim:"pop",size:120,y:.35,x:.78,rot:0}
+ }[type];return Object.assign(base,def,o)}
+function template(name){const D=dur();
+ if(name==="finds")els=[mk("badge"),mk("hook"),mk("cta")];
+ if(name==="clean")els=[mk("sticker",{text:(brand.hook||"Dein Thema hier"),font:"Anton",color:"#ffffff",color2:"#141414",anim:"slide",size:66,y:.2,end:Math.min(D,3.5),sparkle:false}),
+   mk("cta",{text:`Kommentiere „${brand.word||"Link"}“`,font:"Anton",color:"#ffee58",color2:"#141414",anim:"pop",size:60,y:.2,sparkle:false})];
+ if(name==="pastell")els=[mk("badge",{font:"Fredoka",color:"#c4b5fd",color2:"#fde2ec",anim:"slide"}),
+   mk("hook",{font:"Fredoka",color:"#2a1b24",color2:"#fde2ec",anim:"fade",sparkle:false}),
+   mk("cta",{font:"Fredoka",color:"#ffffff",color2:"#c4b5fd",anim:"slide",size:56})];
+ sel=-1;renderList();}
+document.querySelectorAll("[data-tpl]").forEach(b=>b.onclick=()=>template(b.dataset.tpl));
+document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>{const t=video.currentTime||0;const e=mk(b.dataset.add);
+ if(!["badge","hook","cta"].includes(e.type)){e.start=+t.toFixed(1);e.end=+Math.min(dur(),t+3).toFixed(1)}
+ els.push(e);sel=els.length-1;renderList();});
+
+// ---------- Liste / Editor ----------
+function sw(val,key,i){return `<div class="sw">${COLORS.map(c=>`<span style="background:${c}" class="${c===val?"on":""}" data-i="${i}" data-k="${key}" data-c="${c}"></span>`).join("")}</div>`}
+function renderList(){const L=$("#list");const D=dur();
+ L.innerHTML=els.map((e,i)=>{const open=i===sel;return `<div class="el ${open?"sel":""}"><div class="hd" data-sel="${i}"><b>${TYPES[e.type]}: ${(e.text||"").split("\n")[0]}</b><i>${e.start.toFixed(1)} bis ${e.end.toFixed(1)} s</i></div>${open?`<div class="bd">
+ ${e.type!=="arrow"?`<div><label class="hint">${e.type==="price"?"Neuer Preis":"Text"}</label><textarea data-f="text">${e.text}</textarea></div>`:""}
+ ${["badge","price"].includes(e.type)?`<div><label class="hint">${e.type==="price"?"Alter Preis":"Slogan"}</label><input type="text" data-f="sub" value="${e.sub}"></div>`:""}
+ ${!["emoji","arrow"].includes(e.type)?`<div><label class="hint">Schrift</label><select data-f="font">${FONTS.map(f=>`<option value="${f[0]}" ${f[0]===e.font?"selected":""} style="font-family:'${f[0]}'">${f[1]} (${f[0]})</option>`).join("")}</select></div>`:""}
+ ${e.type!=="emoji"?`<div><label class="hint">Farbe</label>${sw(e.color,"color",i)}</div><div><label class="hint">${{hook:"Balkenfarbe",price:"Schildfarbe",badge:"Slogan-Banner",rating:"Sternfarbe"}[e.type]||"Kontur"}</label>${sw(e.color2,"color2",i)}</div>`:""}
+ <div><label class="hint">Animation</label><select data-f="anim">${ANIMS.map(a=>`<option value="${a[0]}" ${a[0]===e.anim?"selected":""}>${a[1]}</option>`).join("")}</select></div>
+ <div class="grid2"><div><label class="hint">Größe</label><input type="range" min="20" max="200" data-f="size" value="${e.size}"></div><div><label class="hint">Drehung</label><input type="range" min="-180" max="180" data-f="rot" value="${e.rot}"></div></div>
+ <div class="grid2"><div><label class="hint">von (s)</label><input type="number" step="0.1" min="0" max="${D}" data-f="start" value="${e.start.toFixed(1)}"></div><div><label class="hint">bis (s)</label><input type="number" step="0.1" min="0" max="${D}" data-f="end" value="${e.end.toFixed(1)}"></div></div>
+ <div class="row"><button class="sm" data-act="now">Start = jetzt</button><button class="sm" data-act="endnow">Ende = jetzt</button>
+ <label class="row" style="gap:4px"><input type="checkbox" data-f="sparkle" ${e.sparkle?"checked":""}> Glitzer</label></div>
+ <div class="row"><button class="sm" data-act="dup">Duplizieren</button><button class="sm" data-act="up">Nach vorne</button><button class="sm" data-act="del" style="color:#c00">Löschen</button></div>
+ </div>`:""}</div>`}).join("")||`<p class="hint">Noch keine Elemente. Wähle oben eine Vorlage oder füge Elemente hinzu.</p>`;
+ L.querySelectorAll("[data-sel]").forEach(h=>h.onclick=()=>{sel=sel==+h.dataset.sel?-1:+h.dataset.sel;renderList();const e=els[sel];if(e&&video.duration&&(video.currentTime<e.start||video.currentTime>e.end)){video.currentTime=Math.min(e.end,e.start+0.8)}});
+ const e=els[sel];if(!e)return;
+ L.querySelectorAll("[data-f]").forEach(inp=>{const f=inp.dataset.f;const ev=inp.tagName==="SELECT"||inp.type==="checkbox"||inp.type==="number"?"change":"input";
+  inp.addEventListener(ev,()=>{let v=inp.type==="checkbox"?inp.checked:inp.value;if(["size","rot","start","end"].includes(f))v=+v;e[f]=v;if(f==="font")loadFont(v);if(["start","end","anim"].includes(f))renderList()})});
+ L.querySelectorAll(".sw span").forEach(s=>s.onclick=()=>{els[+s.dataset.i][s.dataset.k]=s.dataset.c;renderList()});
+ L.querySelectorAll("[data-act]").forEach(b=>b.onclick=()=>{const a=b.dataset.act,t=+video.currentTime.toFixed(1);
+  if(a==="now")e.start=t;if(a==="endnow")e.end=t;if(a==="dup"){els.splice(sel+1,0,JSON.parse(JSON.stringify(e)));sel++}
+  if(a==="up"){els.splice(sel,1);els.push(e);sel=els.length-1}if(a==="del"){els.splice(sel,1);sel=-1}renderList()});
+}
+function loadFont(f){return document.fonts.load(`${WEIGHT[f]||400} 40px "${f}"`).catch(()=>{})}
+
+// ---------- Zeichnen ----------
+const eo=x=>{x=Math.max(0,Math.min(1,x));return 1-(1-x)**3};
+const eb=x=>{x=Math.max(0,Math.min(1,x));const c=1.9;return 1+(c+1)*(x-1)**3+c*(x-1)**2};
+function fnt(e,px){return `${WEIGHT[e.font]||400} ${px}px "${e.font}", sans-serif`}
+function rr(c,x,y,w,h,r){c.beginPath();c.roundRect?c.roundRect(x,y,w,h,r):c.rect(x,y,w,h)}
+function star(c,cx,cy,r,col){c.beginPath();for(let i=0;i<8;i++){const a=Math.PI/4*i-Math.PI/2,q=i%2?r*.25:r;c.lineTo(cx+q*Math.cos(a),cy+q*Math.sin(a))}c.closePath();c.fillStyle=col;c.fill()}
+function star5(c,cx,cy,r,col){c.beginPath();for(let i=0;i<10;i++){const a=Math.PI/5*i-Math.PI/2,q=i%2?r*.45:r;c.lineTo(cx+q*Math.cos(a),cy+q*Math.sin(a))}c.closePath();c.fillStyle=col;c.fill();c.lineWidth=3*S;c.strokeStyle="#fff";c.stroke()}
+
+// liefert {w,h,draw(c, chars)} ; Ursprung = Mitte
+function layout(e){const px=e.size*S;const c=ctx;
+ const lines=(e.text||"").split("\n");
+ if(e.type==="hook"){c.font=fnt(e,px);try{c.letterSpacing=(-.04*px)+"px"}catch(_){}
+  const ws=lines.map(l=>c.measureText(l).width),padx=.36*px,rowh=px*1.3,gap=.12*px;
+  const w=Math.max(...ws)+2*padx,h=lines.length*rowh+(lines.length-1)*gap;try{c.letterSpacing="0px"}catch(_){}
+  return{w,h,draw(c,n){c.font=fnt(e,px);try{c.letterSpacing=(-.04*px)+"px"}catch(_){}c.textBaseline="middle";c.textAlign="center";let y=-h/2,k=n;
+   lines.forEach((l,i)=>{const t=n==null?l:l.slice(0,Math.max(0,k));k-=l.length;const tw=c.measureText(t).width;if(t.length){c.fillStyle=e.color2;c.fillRect(-tw/2-padx,y,tw+2*padx,rowh);c.fillStyle=e.color;c.fillText(t,0,y+rowh*.53)}y+=rowh+gap});try{c.letterSpacing="0px"}catch(_){}}}}
+ if(e.type==="emoji"){c.font=`${px}px "Apple Color Emoji","Noto Color Emoji",sans-serif`;const w=c.measureText(e.text).width;
+  return{w,h:px*1.1,draw(c){c.font=`${px}px "Apple Color Emoji","Noto Color Emoji",sans-serif`;c.textAlign="center";c.textBaseline="middle";c.fillText(e.text,0,0)}}}
+ if(e.type==="arrow"){const L=px*1.6;return{w:L,h:px*.7,draw(c){c.lineCap="round";c.lineJoin="round";
+  const path=()=>{c.beginPath();c.moveTo(-L/2,0);c.quadraticCurveTo(0,-px*.35,L/2-px*.1,0);c.moveTo(L/2-px*.1,0);c.lineTo(L/2-px*.45,-px*.25);c.moveTo(L/2-px*.1,0);c.lineTo(L/2-px*.38,px*.28)};
+  path();c.strokeStyle=e.color2;c.lineWidth=px*.22;c.stroke();path();c.strokeStyle=e.color;c.lineWidth=px*.12;c.stroke()}}}
+ if(e.type==="price"){c.font=fnt(e,px);const w1=c.measureText(e.text).width;c.font=fnt(e,px*.5);const w2=c.measureText(e.sub).width;
+  const w=Math.max(w1,w2)+px*.9,h=px*1.95;return{w,h,draw(c){rr(c,-w/2,-h/2,w,h,px*.18);c.fillStyle=e.color2;c.shadowColor="#0004";c.shadowBlur=12*S;c.shadowOffsetY=5*S;c.fill();c.shadowColor="transparent";
+   c.beginPath();c.arc(-w/2+px*.3,-h/2+px*.3,px*.09,0,7);c.fillStyle="#fff";c.fill();
+   c.textAlign="center";c.textBaseline="middle";c.fillStyle=e.color;c.font=fnt(e,px*.5);c.globalAlpha*=.75;c.fillText(e.sub,0,-h*.22);
+   c.fillRect(-w2/2,-h*.22,w2,Math.max(3,px*.06));c.globalAlpha/= .75;c.font=fnt(e,px);c.fillText(e.text,0,h*.18)}}}
+ // Sticker-Texte (sticker, cta, badge, rating)
+ c.font=fnt(e,px);const ws=lines.map(l=>c.measureText(l).width);const lh=px*1.08,sw=Math.max(4,px*.11);
+ let w=Math.max(...ws)+sw*2,h=lines.length*lh+sw;let extra=0,sub=null;
+ if(e.type==="badge"&&e.sub){const sp=px*.42;c.font=fnt({font:"Fredoka"},sp);const sw2=c.measureText(e.sub).width;sub={sp,sw2,bh:sp*1.45,bw:sw2+sp*1.1};extra=sub.bh-px*.05;w=Math.max(w,sub.bw)}
+ if(e.type==="rating"){extra=px*1.25}
+ const H2=h+extra;
+ return{w,h:H2,draw(c,n){c.textAlign="center";c.textBaseline="middle";c.lineJoin="round";let y=-H2/2+lh/2+sw/2,k=n;
+  if(e.type==="rating"){for(let i=0;i<5;i++)star5(c,(i-2)*px*1.05,y,px*.5,e.color2);y+=px*1.25}
+  c.font=fnt(e,px);
+  lines.forEach(l=>{const t=n==null?l:l.slice(0,Math.max(0,k));k-=l.length;
+   c.lineWidth=sw*2;c.strokeStyle="rgba(0,0,0,.22)";c.strokeText(t,3*S,y+4*S);
+   c.strokeStyle=e.type==="rating"?"#141414":(e.type==="badge"?"#ffffff":e.color2);c.strokeText(t,0,y);c.fillStyle=e.color;c.fillText(t,0,y);y+=lh});
+  if(sub){const by=y-lh/2+sub.bh/2-px*.12;rr(c,-sub.bw/2,by-sub.bh/2,sub.bw,sub.bh,sub.sp*.25);c.fillStyle=e.color2;c.fill();
+   c.font=fnt({font:"Fredoka"},sub.sp);c.fillStyle=(e.color2==="#141414"||e.color2==="#ec4899")?"#fff":"#1d1d1d";c.fillText(e.sub,0,by+sub.sp*.05)}}}
+}
+function cursor(c,x,y){const k=2.1*S;const p=[[0,0],[0,17],[4,13],[7,20],[10,19],[7,12],[12.5,12]];c.beginPath();p.forEach(([a,b],i)=>c[i?"lineTo":"moveTo"](x+a*k,y+b*k));c.closePath();c.fillStyle="#000";c.fill();c.lineWidth=1.6*k;c.strokeStyle="#fff";c.stroke()}
+function selbox(c,w,h){const m=10*S;c.save();c.setLineDash([9*S,6*S]);c.lineWidth=2.2*S;c.strokeStyle="#40a0ff";c.strokeRect(-w/2-m,-h/2-m,w+2*m,h+2*m);c.setLineDash([]);
+ [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([a,b])=>{const s=9*S;c.fillStyle="#40a0ff";c.fillRect(a*(w/2+m)-s,b*(h/2+m)-s,2*s,2*s);c.lineWidth=2*S;c.strokeStyle="#fff";c.strokeRect(a*(w/2+m)-s,b*(h/2+m)-s,2*s,2*s)});c.restore()}
+
+function drawEl(e,t,idx){if(t<e.start||t>e.end)return;const lt=t-e.start,L=layout(e);
+ let dx=0,dy=0,sc=1,rot=e.rot*Math.PI/180,al=1,n=null;const a=e.anim;
+ if(a==="drag")dx=(1-eo(lt/.55))*W*.85;
+ if(a==="pop"||a==="wobble")sc=lt<.35?Math.max(.02,eb(lt/.35)):1;
+ if(a==="wobble"&&lt>=.35)rot+=0.05*Math.sin(lt*4);
+ if(a==="bounce"){sc=lt<.3?Math.max(.02,eb(lt/.3)):1;dy=-Math.abs(Math.sin(lt*4))*18*S}
+ if(a==="slide"){dy=(1-eo(lt/.45))*160*S;al=Math.min(1,lt/.3)}
+ if(a==="fade")al=Math.min(1,lt/.5);
+ if(a==="type")n=Math.floor(lt*16);
+ const out=e.end-t;if(out<.2&&e.end<dur()-.05)al*=out/.2;
+ ctx.save();ctx.globalAlpha=al;ctx.translate(e.x*W+dx,e.y*H+dy);ctx.rotate(rot);ctx.scale(sc,sc);
+ L.draw(ctx,n);
+ if(e.sparkle){const tw=k=>(.55+.45*Math.sin(lt*6+k))*Math.min(1,lt/.5);star(ctx,-L.w/2-8*S,-L.h/2+6*S,16*S*tw(0),"#ffee58");star(ctx,L.w/2+6*S,L.h/2-4*S,13*S*tw(2),"#ffffff");star(ctx,L.w/2-10*S,-L.h/2-6*S,10*S*tw(4),"#40a0ff")}
+ if(a==="drag"&&lt<1.4)selbox(ctx,L.w,L.h);
+ if(a==="drag"&&lt<1.0)cursor(ctx,L.w/2+12*S,L.h/2+12*S);
+ if(!exporting&&idx===sel){ctx.setLineDash([6*S,5*S]);ctx.lineWidth=2*S;ctx.strokeStyle="#ec4899";ctx.strokeRect(-L.w/2-6*S,-L.h/2-6*S,L.w+12*S,L.h+12*S)}
+ ctx.restore();e._box={x:e.x*W-L.w/2,y:e.y*H-L.h/2,w:L.w,h:L.h};}
+
+function frame(){const t=video.currentTime||0;
+ if(video.readyState>=2)ctx.drawImage(video,0,0,W,H);
+ els.forEach((e,i)=>drawEl(e,t,i));
+ if(!exporting){$("#seek").value=t;$("#tlabel").textContent=t.toFixed(1).replace(".",",")+" s"}
+ else{$("#prog div").style.width=(100*t/dur())+"%"}
+ requestAnimationFrame(frame)}
+
+// ---------- Video laden ----------
+$("#empty").onclick=()=>$("#file").click();
+$("#file").onchange=e=>{const f=e.target.files[0];if(!f)return;video.src=URL.createObjectURL(f);video.load()};
+video.onloadedmetadata=()=>{const vw=video.videoWidth,vh=video.videoHeight,k=Math.min(1,1920/Math.max(vw,vh));W=cv.width=Math.round(vw*k/2)*2;H=cv.height=Math.round(vh*k/2)*2;S=W/720;
+ $("#empty").style.display="none";cv.style.display="block";["#play","#seek","#exp"].forEach(s=>$(s).disabled=false);$("#seek").max=video.duration;
+ if(!els.length)template("finds");else renderList();video.currentTime=.01};
+function audio(){if(actx)return;try{actx=new(window.AudioContext||window.webkitAudioContext)();const src=actx.createMediaElementSource(video);spk=actx.createGain();dest=actx.createMediaStreamDestination();src.connect(spk);spk.connect(actx.destination);src.connect(dest)}catch(err){console.log(err)}}
+$("#play").onclick=()=>{audio();actx&&actx.resume();if(video.paused){video.play();$("#play").textContent="❚❚ Pause"}else{video.pause();$("#play").textContent="▶︎ Abspielen"}};
+video.onended=()=>{$("#play").textContent="▶︎ Abspielen"};
+$("#seek").oninput=e=>{video.currentTime=+e.target.value};
+
+// ---------- Verschieben per Finger ----------
+let drag=null;
+function pt(ev){const r=cv.getBoundingClientRect();return{x:(ev.clientX-r.left)/r.width*W,y:(ev.clientY-r.top)/r.height*H}}
+cv.addEventListener("pointerdown",ev=>{const p=pt(ev),t=video.currentTime;let hit=-1;
+ els.forEach((e,i)=>{const b=e._box;if(b&&t>=e.start&&t<=e.end&&p.x>=b.x-20&&p.x<=b.x+b.w+20&&p.y>=b.y-20&&p.y<=b.y+b.h+20)hit=i});
+ if(hit<0)hit=sel;if(hit<0)return;if(hit!==sel){sel=hit;renderList()}const e=els[sel];drag={ox:p.x-e.x*W,oy:p.y-e.y*H};cv.setPointerCapture(ev.pointerId)});
+cv.addEventListener("pointermove",ev=>{if(!drag||sel<0)return;const p=pt(ev),e=els[sel];e.x=Math.max(0,Math.min(1,(p.x-drag.ox)/W));e.y=Math.max(0,Math.min(1,(p.y-drag.oy)/H))});
+cv.addEventListener("pointerup",()=>drag=null);
+
+// ---------- Export ----------
+let dl=null;window.claude&&claude.use&&claude.use("downloads").then(d=>dl=d).catch(()=>{});
+function mime(){for(const m of["video/mp4;codecs=avc1.42E01E,mp4a.40.2","video/mp4","video/webm;codecs=vp9,opus","video/webm"])if(window.MediaRecorder&&MediaRecorder.isTypeSupported(m))return m;return""}
+$("#exp").onclick=async()=>{audio();await actx?.resume();await Promise.all(els.map(e=>loadFont(e.font)));
+ const m=mime();if(!m){$("#out").textContent="Dieser Browser kann leider keine Videos aufnehmen. Bitte Safari oder Chrome in aktueller Version nutzen.";return}
+ const vs=cv.captureStream(30);const st=new MediaStream([...vs.getVideoTracks(),...(dest?dest.stream.getAudioTracks():[])]);
+ const rec=new MediaRecorder(st,{mimeType:m,videoBitsPerSecond:10e6,audioBitsPerSecond:160e3});const chunks=[];rec.ondataavailable=e=>e.data.size&&chunks.push(e.data);
+ exporting=true;sel=-1;renderList();$("#exp").disabled=true;$("#prog").style.display="block";$("#out").innerHTML="";if(spk)spk.gain.value=0;
+ video.pause();video.currentTime=0;await new Promise(r=>video.addEventListener("seeked",r,{once:true}));
+ rec.start(500);await video.play();
+ video.addEventListener("ended",()=>setTimeout(()=>rec.stop(),250),{once:true});
+ rec.onstop=()=>{exporting=false;if(spk)spk.gain.value=1;$("#exp").disabled=false;$("#prog").style.display="none";$("#play").textContent="▶︎ Abspielen";
+  const ext=m.includes("mp4")?"mp4":"webm";const blob=new Blob(chunks,{type:m.split(";")[0]});const url=URL.createObjectURL(blob);const name=`reel_${new Date().toISOString().slice(0,16).replace(/[-:T]/g,"")}.${ext}`;
+  $("#out").innerHTML=`<p><b>Fertig!</b> ${(blob.size/1e6).toFixed(1)} MB</p><div class="row"><button class="main" id="save">Speichern</button></div><video src="${url}" controls playsinline></video>`;
+  $("#save").onclick=async()=>{
+   if(dl){try{await dl.save({filename:name,data:blob});return}catch(err){}}
+   const f=new File([blob],name,{type:blob.type});
+   if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f]});return}catch(err){}}
+   const a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove()}}};
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
