@@ -83,6 +83,20 @@
   <div id="prog" style="margin-top:10px"><div></div></div>
   <div id="out"></div>
 </section>
+
+<section class="card">
+  <h2><span class="num">6</span>Feedback <span id="fbCount" class="hint"></span></h2>
+  <p class="hint">Sag, was gefällt oder was anders sein soll. Das ausgewählte Element, die Videozeit und ein Vorschaubild werden mitgespeichert.</p>
+  <button id="fbTalk" class="main big"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/></svg><span id="fbTalkLabel">Feedback sprechen</span></button>
+  <div id="fbEdit" style="display:none;gap:8px;margin-top:10px">
+    <div id="fbCtx" class="hint"></div>
+    <textarea id="fbText" placeholder="Deine Notiz"></textarea>
+    <div id="fbStatus" class="hint"></div>
+    <div class="grid2"><button id="fbSave" class="main">Notiz speichern</button><button id="fbCancel">Verwerfen</button></div>
+  </div>
+  <div id="fbList"></div>
+  <button id="fbExport" style="margin-top:10px;width:100%">Feedback exportieren</button>
+</section>
 </div>
 </main>
 <video id="src" playsinline webkit-playsinline preload="auto"></video>

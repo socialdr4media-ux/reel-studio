@@ -5,6 +5,7 @@ import{frame}from"./draw.js";
 import{initPlayer}from"./player.js";
 import{initExport}from"./export.js";
 import{initCover}from"./cover.js";
+import{initFeedback}from"./feedback.js";
 import{SCHEMES,scheme,applyScheme}from"./schemes.js";
 
 ["Name","Slogan","Hook","Word"].forEach(k=>{const i=$("#b"+k);i.value=brand[k.toLowerCase()]||"";i.oninput=()=>{brand[k.toLowerCase()]=i.value;store("brand",brand)}});
@@ -24,4 +25,5 @@ initPlayer(()=>template("celine"));
 document.querySelector('[data-tpl="celine"]').classList.add("on");markScheme("celine");
 initExport();
 initCover();
+initFeedback();
 requestAnimationFrame(frame);

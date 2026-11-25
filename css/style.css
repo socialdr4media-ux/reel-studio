@@ -50,3 +50,9 @@ video#src{position:fixed;left:-9999px;top:0;width:2px;height:2px}
 .schemes button.on{box-shadow:0 0 0 2px var(--pink);background:#fff}
 .dots{display:flex;gap:2px}
 .dots i{width:14px;height:14px;border-radius:50%;box-shadow:0 0 0 1px #0002}
+button.big{width:100%;padding:14px;font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px}
+button.rec{background:#c0265f;animation:pulse 1.2s infinite}
+@keyframes pulse{50%{opacity:.75}}
+.note{display:grid;grid-template-columns:72px 1fr;gap:10px;border-top:1px solid var(--line);padding:10px 0;align-items:start}
+.note img{width:72px;border-radius:8px}
+.note p{margin:4px 0 6px;white-space:pre-wrap}
