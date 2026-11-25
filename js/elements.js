@@ -11,7 +11,14 @@ export function mk(type,o={}){const D=dur();const base={type,text:"Text",sub:"",
   arrow:{text:"",font:"Gochi Hand",color:"#ff70aa",color2:"#ffffff",anim:"bounce",size:120,y:.55,x:.7,rot:120},
   emoji:{text:"🍩",anim:"pop",size:120,y:.35,x:.78,rot:0},
   ctitle:{text:brand.hook||"Dein Thema hier",font:"Alfa Slab One",color:"#ffffff",color2:"#f03c9a",anim:"fade",size:84,y:.8,slant:10},
-  cbox:{text:brand.hook||"6 Tipps zur Schnullerentwöhnung",font:"Montserrat",color:"#1f2a6b",color2:"#6b2fbf",bg:"#ffffff",anim:"pop",size:54,y:.3}
+  cbox:{text:brand.hook||"6 Tipps zur Schnullerentwöhnung",font:"Montserrat",color:"#1f2a6b",color2:"#6b2fbf",bg:"#ffffff",anim:"pop",size:54,y:.3},
+  bubble:{text:"Das musst du sehen!",font:"Fredoka",color:"#1f2a6b",color2:"#f03c9a",bg:"#ffffff",anim:"pop",size:52,y:.3},
+  note:{text:"Tipp:\nimmer zwei\neinpacken!",font:"Caveat",color:"#2a1b24",color2:"#f03c9a",bg:"#fff3a8",anim:"pop",size:54,y:.35,rot:-4},
+  ribbon:{text:"Mein Favorit",font:"Montserrat",color:"#ffffff",color2:"#f03c9a",anim:"slide",size:46,y:.2},
+  stamp:{text:"-40 %",font:"Anton",color:"#e11d48",color2:"#ffffff",anim:"pop",size:64,y:.3,x:.72,rot:-14},
+  numcircle:{text:"1",font:"Montserrat",color:"#ffffff",color2:"#f03c9a",anim:"pop",size:70,y:.2,x:.2},
+  checklist:{text:"Feuchttücher\nWechselkleidung\nSnacks",font:"Montserrat",color:"#1f2a6b",color2:"#f03c9a",bg:"#ffffff",anim:"type",size:40,y:.4},
+  newsticker:{text:"NEU",font:"Archivo Black",color:"#ffffff",color2:"#6b2fbf",anim:"wobble",size:56,y:.18,x:.78,rot:12}
  }[type];return Object.assign(base,def,o)}
 
 export function buildTemplate(name){const D=dur();

@@ -6,11 +6,11 @@ function sw(val,key,i){return `<div class="sw">${COLORS.map(c=>`<span style="bac
 
 export function renderList(){const L=$("#list");const D=dur();const els=st.els;
  L.innerHTML=els.map((e,i)=>{const open=i===st.sel;return `<div class="el ${open?"sel":""}"><div class="hd" data-sel="${i}"><b>${TYPES[e.type]}: ${(e.text||"").split("\n")[0]}</b><i>${e.start.toFixed(1)} bis ${e.end.toFixed(1)} s</i></div>${open?`<div class="bd">
- ${e.type!=="arrow"?`<div><label class="hint">${e.type==="price"?"Neuer Preis":"Text"}</label><textarea data-f="text">${e.text}</textarea></div>`:""}
+ ${e.type!=="arrow"?`<div><label class="hint">${e.type==="price"?"Neuer Preis":e.type==="checklist"?"Punkte (eine Zeile pro Punkt)":"Text"}</label><textarea data-f="text">${e.text}</textarea></div>`:""}
  ${["badge","price"].includes(e.type)?`<div><label class="hint">${e.type==="price"?"Alter Preis":"Slogan"}</label><input type="text" data-f="sub" value="${e.sub}"></div>`:""}
  ${!["emoji","arrow"].includes(e.type)?`<div><label class="hint">Schrift</label><select data-f="font">${(FONTSETS[e.type]?FONTS.filter(f=>FONTSETS[e.type].includes(f[0])):FONTS).map(f=>`<option value="${f[0]}" ${f[0]===e.font?"selected":""} style="font-family:'${f[0]}'">${f[1]} (${f[0]})</option>`).join("")}</select></div>`:""}
- ${e.type!=="emoji"?`<div><label class="hint">${{ctitle:"Textfarbe",cbox:"Textfarbe"}[e.type]||"Farbe"}</label>${sw(e.color,"color",i)}</div><div><label class="hint">${{hook:"Balkenfarbe",price:"Schildfarbe",badge:"Slogan-Banner",rating:"Sternfarbe",ctitle:"Bandfarbe",cbox:"Zahl und Schlüsselwort"}[e.type]||"Kontur"}</label>${sw(e.color2,"color2",i)}</div>`:""}
- ${e.bg!==undefined?`<div><label class="hint">Boxfarbe</label>${sw(e.bg,"bg",i)}</div>`:""}
+ ${e.type!=="emoji"?`<div><label class="hint">${{ctitle:"Textfarbe",cbox:"Textfarbe"}[e.type]||"Farbe"}</label>${sw(e.color,"color",i)}</div><div><label class="hint">${{hook:"Balkenfarbe",price:"Schildfarbe",badge:"Slogan-Banner",rating:"Sternfarbe",ctitle:"Bandfarbe",cbox:"Zahl und Schlüsselwort",bubble:"Rand",note:"Klebestreifen",ribbon:"Bandfarbe",stamp:"Füllung",numcircle:"Kreisfarbe",checklist:"Haken",newsticker:"Sternfarbe"}[e.type]||"Kontur"}</label>${sw(e.color2,"color2",i)}</div>`:""}
+ ${e.bg!==undefined?`<div><label class="hint">${e.type==="note"?"Papierfarbe":"Boxfarbe"}</label>${sw(e.bg,"bg",i)}</div>`:""}
  ${e.type==="ctitle"?`<div><label class="hint">Schrägstellung</label><input type="range" min="0" max="20" data-f="slant" value="${e.slant||0}"></div>`:""}
  <div><label class="hint">Animation</label><select data-f="anim">${ANIMS.map(a=>`<option value="${a[0]}" ${a[0]===e.anim?"selected":""}>${a[1]}</option>`).join("")}</select></div>
  <div class="grid2"><div><label class="hint">Größe</label><input type="range" min="20" max="200" data-f="size" value="${e.size}"></div><div><label class="hint">Drehung</label><input type="range" min="-180" max="180" data-f="rot" value="${e.rot}"></div></div>
