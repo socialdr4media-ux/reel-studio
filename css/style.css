@@ -45,3 +45,8 @@ video#src{position:fixed;left:-9999px;top:0;width:2px;height:2px}
 .covers{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:start}
 .covers div{display:grid;gap:4px;justify-items:center}
 .covers canvas{width:100%;height:auto;border-radius:10px;background:#222}
+.schemes{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.schemes button{padding:8px 4px;font-size:12px;line-height:1.2;display:grid;justify-items:center;gap:4px;min-height:52px}
+.schemes button.on{box-shadow:0 0 0 2px var(--pink);background:#fff}
+.dots{display:flex;gap:2px}
+.dots i{width:14px;height:14px;border-radius:50%;box-shadow:0 0 0 1px #0002}

@@ -43,7 +43,7 @@ export function layout(e){const S=st.S;const px=e.size*S;const c=ctx;
    c.lineWidth=sw*2;c.strokeStyle="rgba(0,0,0,.22)";c.strokeText(t,3*S,y+4*S);
    c.strokeStyle=e.type==="rating"?"#141414":(e.type==="badge"?"#ffffff":e.color2);c.strokeText(t,0,y);c.fillStyle=e.color;c.fillText(t,0,y);y+=lh});
   if(sub){const by=y-lh/2+sub.bh/2-px*.12;rr(c,-sub.bw/2,by-sub.bh/2,sub.bw,sub.bh,sub.sp*.25);c.fillStyle=e.color2;c.fill();
-   c.font=fnt({font:"Fredoka"},sub.sp);c.fillStyle=(e.color2==="#141414"||e.color2==="#ec4899")?"#fff":"#1d1d1d";c.fillText(e.sub,0,by+sub.sp*.05)}}}
+   c.font=fnt({font:"Fredoka"},sub.sp);c.fillStyle=(e.color2==="#ec4899"||!isLight(e.color2))?"#fff":"#1d1d1d";c.fillText(e.sub,0,by+sub.sp*.05)}}}
 }
 export function hexA(h,a){const n=parseInt(h.slice(1),16);return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`}
 export function mix(h,h2,k){const a=parseInt(h.slice(1),16),b=parseInt(h2.slice(1),16);const m=s=>Math.round((a>>s&255)*(1-k)+(b>>s&255)*k);return "#"+((m(16)<<16)|(m(8)<<8)|m(0)).toString(16).padStart(6,"0")}
@@ -64,8 +64,10 @@ function ctitle(e,px,c){const{W,H,S}=st;const nar=e.font==="Alfa Slab One"?1:.86
   cut(ls,n).forEach((t,i)=>{const y=-th/2+lh*(i+.5);c.save();c.translate(0,y);c.transform(nar,0,-sl,1,0,0);c.fillText(t,0,p*.04);c.restore()});
   c.shadowColor="transparent"}}}
 
-function cbox(e,px,c){const{W,S}=st;const maxW=W*.78,lh=px*1.2,pad=px*.6;c.font=fnt(e,px);
+function cbox(e,px,c){const{W,S}=st;const maxW=W*.78;
  const words=(e.text||"").replace(/\n/g," \n ").split(/ +/).filter(Boolean);
+ c.font=fnt(e,px);const widest=Math.max(1,...words.map(w=>c.measureText(w).width));if(widest>maxW)px*=maxW/widest;
+ const lh=px*1.2,pad=px*.6;c.font=fnt(e,px);
  const nAcc=/^\d/.test(words[0]||"")?2:1;let wi=0;const toks=words.map(w=>w==="\n"?{br:1}:{t:w,acc:wi++<nAcc});
  const lines=[[]];let lw=0;const sp=c.measureText(" ").width;
  toks.forEach(k=>{if(k.br){lines.push([]);lw=0;return}const w=c.measureText(k.t).width;const L=lines[lines.length-1];

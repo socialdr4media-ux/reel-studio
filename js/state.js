@@ -7,7 +7,7 @@ export const TYPES={badge:"Badge",hook:"Balken-Text",sticker:"Pop-up Text",cta:"
 
 export const $=s=>document.querySelector(s);
 export const video=$("#src"),cv=$("#cv"),ctx=cv.getContext("2d");
-export const st={els:[],sel:-1,tpl:null,W:720,H:1280,S:1,exporting:false,actx:null,spk:null,dest:null};
+export const st={els:[],sel:-1,tpl:null,scheme:null,W:720,H:1280,S:1,exporting:false,actx:null,spk:null,dest:null};
 
 export function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem("rs_"+k));localStorage.setItem("rs_"+k,JSON.stringify(v))}catch(e){return null}}
 export const brand=store("brand")||{name:"Celines Finds",slogan:"Gekauft. Getestet. Geliebt.",hook:"",word:"Link"};
