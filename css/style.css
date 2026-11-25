@@ -42,3 +42,6 @@ input[type=range]{width:100%;accent-color:var(--pink)}
 #prog div{height:100%;width:0;background:var(--pink)}
 #out video{width:100%;max-width:300px;border-radius:12px;margin-top:8px}
 video#src{position:fixed;left:-9999px;top:0;width:2px;height:2px}
+.covers{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:start}
+.covers div{display:grid;gap:4px;justify-items:center}
+.covers canvas{width:100%;height:auto;border-radius:10px;background:#222}

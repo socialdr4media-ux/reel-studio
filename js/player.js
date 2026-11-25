@@ -7,7 +7,7 @@ export function initPlayer(onFirstLoad){
  $("#empty").onclick=()=>$("#file").click();
  $("#file").onchange=e=>{const f=e.target.files[0];if(!f)return;video.src=URL.createObjectURL(f);video.load()};
  video.onloadedmetadata=()=>{const vw=video.videoWidth,vh=video.videoHeight,k=Math.min(1,1920/Math.max(vw,vh));st.W=cv.width=Math.round(vw*k/2)*2;st.H=cv.height=Math.round(vh*k/2)*2;st.S=st.W/720;
-  $("#empty").style.display="none";cv.style.display="block";["#play","#seek","#exp"].forEach(s=>$(s).disabled=false);$("#seek").max=video.duration;
+  $("#empty").style.display="none";cv.style.display="block";["#play","#seek","#exp","#coverBtn"].forEach(s=>$(s).disabled=false);$("#seek").max=video.duration;
   if(!st.els.length)onFirstLoad();else renderList();video.currentTime=.01};
  $("#play").onclick=()=>{audio();st.actx&&st.actx.resume();if(video.paused){video.play();$("#play").textContent="❚❚ Pause"}else{video.pause();$("#play").textContent="▶︎ Abspielen"}};
  video.onended=()=>{$("#play").textContent="▶︎ Abspielen"};

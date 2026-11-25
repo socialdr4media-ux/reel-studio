@@ -62,7 +62,20 @@
 </section>
 
 <section class="card">
-  <h2><span class="num">4</span>Reel erstellen</h2>
+  <h2><span class="num">4</span>Cover</h2>
+  <p class="hint">Videobild wählen, Titel im Celine-Stil darauf, als JPG speichern.</p>
+  <button id="coverBtn" class="main" disabled>Cover erstellen</button>
+  <div id="coverBox" style="display:none;gap:9px;margin-top:10px">
+    <div><label class="hint">Videobild</label><input id="coverT" type="range" min="0" max="1" step="0.04" value="0"></div>
+    <div><label class="hint">Titel</label><textarea id="coverText"></textarea></div>
+    <div><label class="hint">Schrift</label><select id="coverFont"></select></div>
+    <div class="covers"><div><canvas id="cov916"></canvas><span class="hint">9:16 Reel</span></div><div><canvas id="cov45"></canvas><span class="hint">4:5 Profilraster</span></div></div>
+    <div class="grid2"><button class="main" id="saveCov916">JPG 9:16 speichern</button><button class="main" id="saveCov45">JPG 4:5 speichern</button></div>
+  </div>
+</section>
+
+<section class="card">
+  <h2><span class="num">5</span>Reel erstellen</h2>
   <p class="hint">Das Video läuft einmal komplett durch und wird dabei aufgenommen. Bildschirm bitte anlassen.</p>
   <button id="exp" class="main" disabled>Reel erstellen</button>
   <div id="prog" style="margin-top:10px"><div></div></div>

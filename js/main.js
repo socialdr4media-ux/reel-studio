@@ -4,6 +4,7 @@ import{renderList,loadFont}from"./editor.js";
 import{frame}from"./draw.js";
 import{initPlayer}from"./player.js";
 import{initExport}from"./export.js";
+import{initCover}from"./cover.js";
 
 ["Name","Slogan","Hook","Word"].forEach(k=>{const i=$("#b"+k);i.value=brand[k.toLowerCase()]||"";i.oninput=()=>{brand[k.toLowerCase()]=i.value;store("brand",brand)}});
 
@@ -17,4 +18,5 @@ document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>{const t=video.
 initPlayer(()=>template("celine"));
 document.querySelector('[data-tpl="celine"]').classList.add("on");
 initExport();
+initCover();
 requestAnimationFrame(frame);

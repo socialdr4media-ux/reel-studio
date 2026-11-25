@@ -4,10 +4,11 @@ import{audio}from"./player.js";
 
 let dl=null;window.claude&&claude.use&&claude.use("downloads").then(d=>dl=d).catch(()=>{});
 
-export async function saveBlob(blob,name){
+export const isMobile=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)||(navigator.maxTouchPoints>1&&/Mac/.test(navigator.userAgent));
+export async function saveBlob(blob,name,shareOnlyMobile=false){
  if(dl){try{await dl.save({filename:name,data:blob});return}catch(err){}}
  const f=new File([blob],name,{type:blob.type});
- if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f]});return}catch(err){}}
+ if((!shareOnlyMobile||isMobile)&&navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f]});return}catch(err){}}
  const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000)}
 
 function mime(){for(const m of["video/mp4;codecs=avc1.42E01E,mp4a.40.2","video/mp4","video/webm;codecs=vp9,opus","video/webm"])if(window.MediaRecorder&&MediaRecorder.isTypeSupported(m))return m;return""}
