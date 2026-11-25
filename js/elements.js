@@ -9,10 +9,14 @@ export function mk(type,o={}){const D=dur();const base={type,text:"Text",sub:"",
   price:{text:"jetzt 24,99 €",sub:"statt 39,99 €",font:"Anton",color:"#141414",color2:"#ffee58",anim:"pop",size:64,y:.7,rot:-6},
   rating:{text:"Meine Bewertung",font:"Gochi Hand",color:"#ffffff",color2:"#ffc400",anim:"pop",size:48,y:.75},
   arrow:{text:"",font:"Gochi Hand",color:"#ff70aa",color2:"#ffffff",anim:"bounce",size:120,y:.55,x:.7,rot:120},
-  emoji:{text:"🍩",anim:"pop",size:120,y:.35,x:.78,rot:0}
+  emoji:{text:"🍩",anim:"pop",size:120,y:.35,x:.78,rot:0},
+  ctitle:{text:brand.hook||"Dein Thema hier",font:"Alfa Slab One",color:"#ffffff",color2:"#f03c9a",anim:"fade",size:84,y:.8,slant:10},
+  cbox:{text:brand.hook||"6 Tipps zur Schnullerentwöhnung",font:"Montserrat",color:"#1f2a6b",color2:"#6b2fbf",bg:"#ffffff",anim:"pop",size:54,y:.3}
  }[type];return Object.assign(base,def,o)}
 
 export function buildTemplate(name){const D=dur();
+ if(name==="celine")return[mk("ctitle"),
+   mk("cta",{font:"Montserrat",color:"#ffffff",color2:"#f03c9a",anim:"pop",size:50,y:.45,pill:true,sparkCols:["#ffffff","#ff4fa3","#fde2ef"]})];
  if(name==="finds")return[mk("badge"),mk("hook"),mk("cta")];
  if(name==="clean")return[mk("sticker",{text:(brand.hook||"Dein Thema hier"),font:"Anton",color:"#ffffff",color2:"#141414",anim:"slide",size:66,y:.2,end:Math.min(D,3.5),sparkle:false}),
    mk("cta",{text:`Kommentiere „${brand.word||"Link"}“`,font:"Anton",color:"#ffee58",color2:"#141414",anim:"pop",size:60,y:.2,sparkle:false})];

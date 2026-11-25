@@ -23,8 +23,9 @@ textarea{min-height:58px;resize:vertical}
 input[type=range]{width:100%;accent-color:var(--pink)}
 .time{width:100%}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.tpl{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tpl{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .tpl button{padding:12px 6px;line-height:1.2}
+.tpl button.on{box-shadow:0 0 0 2px var(--pink);background:#fff}
 .tpl button small{display:block;font-weight:400;color:var(--mut);font-size:11px}
 .add{display:flex;gap:6px;flex-wrap:wrap}
 .el{border:1px solid var(--line);border-radius:12px;margin-top:8px;overflow:hidden}
